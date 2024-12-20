@@ -7,7 +7,7 @@ import 'package:meowmonite/screens/contest_screen.dart';
 import 'package:meowmonite/screens/cat_doctor_screen.dart';
 
 class MainScreen extends StatelessWidget {
-  final MainController controller = Get.find();
+  final MainController controller = Get.put(MainController());
 
   final List<Widget> pages = [
     HomeScreen(),
@@ -19,20 +19,32 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() => pages[controller.currentIndex.value]),
+      body: Obx(
+        () => pages[controller.currentIndex.value],
+      ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           currentIndex: controller.currentIndex.value,
           onTap: controller.updateIndex,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
-            BottomNavigationBarItem(icon: Icon(Icons.book), label: '다이어리'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.emoji_events), label: '대회장'),
-            BottomNavigationBarItem(icon: Icon(Icons.pets), label: '냥냥박사님'),
+          unselectedItemColor: Colors.blueGrey,
+          selectedItemColor: Colors.orangeAccent,
+          items: [
+            _buildBottomNavigationBarItem(Icons.home, '홈'),
+            _buildBottomNavigationBarItem(Icons.book, '다이어리'),
+            _buildBottomNavigationBarItem(Icons.emoji_events, '대회장'),
+            _buildBottomNavigationBarItem(Icons.pets, '냥냥 박사님'),
           ],
         ),
       ),
+    );
+  }
+
+  BottomNavigationBarItem _buildBottomNavigationBarItem(
+      IconData icon, String label) {
+    return BottomNavigationBarItem(
+      icon: Icon(icon),
+      label: label,
     );
   }
 }
